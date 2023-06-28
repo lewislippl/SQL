@@ -1,0 +1,28 @@
+-- create grocery store data base
+create table store (id integer primary key, item text, section text, price integer, amtsold integer);
+ 
+--inserting items into table store
+insert into store values
+(1, "Lemon", "produce", 2.51, 50),
+(2, "Chicken", "meat", 6.21, 30),
+(3, "Multi-vitamin", "health", 5.35, 102),
+(4, "Popcorn", "snacks", 1.26, 22),
+(5, "Steak", "meat", 7.29, 150),
+(6, "Berries", "produce", 3.24, 59),
+(7, "Carrots", "frozen", 2.01, 43),
+(8, "Bacon", "meat", 2.99, 20),
+(9, "Beans", "canned items", 1.99, 1),
+(10, "Cake", "bakery", 4.44, 534);
+ 
+-- display database ordered by price
+SELECT * FROM store order by price desc;
+ 
+-- what is the average price of items in the meat section
+ 
+select avg(price) from store where section="meat";
+ 
+-- what are the five morst popular items?
+ 
+select item, price, amtsold from store
+    order by amtsold desc
+    limit 5
