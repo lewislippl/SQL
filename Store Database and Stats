@@ -1,0 +1,10 @@
+-- create a small store base
+create table store (id integer primary key, item text, price integer, quantitysold integer);
+insert into store values
+(1, "shoes", 90, 5), (2, "shirt", 30, 10), (3, "pants", 40, 15), (4, "socks", 35, 12), (5, "underwear", 10,1);
+-- only show items that more than 6 of the item was sold
+Select * FROM store where quantitysold > 6
+-- order the remaining items from greatest to smallest by quantity sold
+order by quantitysold desc;
+-- what is the max price from the overall list
+select max(price) from store
