@@ -261,3 +261,6 @@ select name, pick_number from picks where "position" = "TE" order by pick_number
 
 -- Not a deep draft for centers, QB's or S
 select "position", count(*) as "amount_picked" from picks group by position order by "amount_picked" asc limit 3;
+
+-- what pick number was the lions last pick
+select picked_by, max(pick_number) as last_pick from picks where picked_by= "Detroit"
