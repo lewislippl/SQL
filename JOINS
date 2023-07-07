@@ -1,0 +1,69 @@
+CREATE TABLE Players (
+  player_id INTEGER,
+  player_name TEXT,
+  team_id INTEGER
+);
+
+INSERT INTO Players (player_id, player_name, team_id)
+VALUES
+  (1, 'Lionel Messi', 1),
+  (2, 'Cristiano Ronaldo', 2),
+  (3, 'Neymar Jr', 1),
+  (4, 'Kylian Mbappé', 3),
+  (5, 'Mohamed Salah', 4);
+
+
+CREATE TABLE Teams (
+  team_id INTEGER,
+  team_name TEXT,
+  country TEXT
+);
+
+
+INSERT INTO Teams (team_id, team_name, country)
+VALUES
+  (1, 'FC Barcelona', 'Spain'),
+  (2, 'Juventus', 'Italy'),
+  (3, 'Paris Saint-Germain', 'France'),
+  (4, 'Liverpool FC', 'England'),
+  (5, 'Real Madrid CF', 'Spain');
+
+CREATE TABLE PlayerStats (
+  player_id INTEGER,
+  goals INTEGER,
+  assists INTEGER,
+  yellow_cards INTEGER,
+  red_cards INTEGER
+);
+
+INSERT INTO PlayerStats (player_id, goals, assists, yellow_cards, red_cards)
+VALUES
+  (1, 30, 25, 3, 0),
+  (2, 35, 15, 2, 0),
+  (3, 20, 30, 4, 1),
+  (4, 25, 10, 1, 0),
+  (5, 40, 10, 2, 0);
+ 
+ select p.player_name, goals from PlayerStats
+ join Players as p
+ on p.player_id=PlayerStats.player_id
+ order by goals desc;
+ 
+select
+  p.player_name,
+  SUM(PlayerStats.goals) AS total_goals,
+  SUM(PlayerStats.assists) AS total_assists
+FROM
+  Players p
+JOIN
+  PlayerStats ON p.player_id = PlayerStats.player_id
+group by p.player_name;
+
+Select p.player_name, t.team_name, t.country
+from Teams t
+Join Players p
+on p.player_id=t.team_id;
+
+SELECT p1.player_name, p2.player_name
+FROM Players p1
+INNER JOIN Players p2 ON p1.team_id = p2.team_id AND p1.player_id <> p2.player_id;
