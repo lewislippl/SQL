@@ -1,0 +1,104 @@
+- #In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data.
+ 
+-- how many orders were placed in Jan.
+SELECT COUNT(Quantity)
+FROM BIT_DB.JanSales
+WHERE length(orderid) = 6
+AND orderid <> 'Order ID';
+ 
+-- how many iPhones in Jan
+select Count(Quantity)from JanSales
+where product = "iPhone"
+and length (orderid) = 6
+and orderid <> 'Order Id';
+ 
+-- all acct numbers from orders placed in Feb
+select distinct acctnum
+from customers as c
+Join FebSales as f
+on f.orderid = c.order_id
+and length (orderid) = 6
+and orderid <> 'Order Id';
+ 
+-- cheapest product in Jan Sales
+SELECT distinct product, price FROM JanSales
+ORDER BY price ASC LIMIT 1
+ 
+-- Revenue from each product in Jan
+select product, Sum(Quantity)*price as Revenue
+from JanSales
+group by product
+having Revenue > 0;
+ 
+-- products and revenue to certain adress
+select Product, Sum(Quantity) * price revenue,quantity
+from FebSales
+where location = "548 Lincoln St, Seattle, WA 98101"
+Group By product;
+ 
+-- How many customers ordered more than 2 products at a time, and what was the average amount spent for those customers?
+select count(distinct c.acctnum), avg(quantity*price) from FebSales as f
+Join customers as c
+on f.orderid=c.order_id
+where f.Quantity >2
+and length(orderid)= 6;
+ 
+-- Using different filtering techiques
+SELECT orderdate from FebSales
+where orderdate between '02/13/19 00:00' AND '02/18/19 00:00';
+ 
+SELECT location from FebSales
+where orderdate = '02/18/19 01:35';
+ 
+Select sum(quantity) from FebSales
+where orderdate like '02/18/19%';
+ 
+SELECT distinct Product
+from FebSales
+where Product like '%Batteries%';
+ 
+Select distinct Product, Price
+FROM FebSales
+where Price like '%.99'
+ 
+ 
+Select product, SUM(quantity) from FebSales
+where location like '%Los Angeles%'
+group by product;
+ 
+-- which locations in new york received at least 3 orders in Jan. a
+Select distinct location, count(orderID) from JanSales
+where location like '%NY%'
+and length(orderid) = 6
+and orderid <> 'Order ID'
+Group by location
+Having count(orderID)>2;
+ 
+--How many of each tyoe of headphone was sold in feb
+Select distinct Product, SUM(Quantity) as Quantity
+from FebSales
+where Product like '%Headphones%'
+and Product <> 'Product'
+Group By Product;
+ 
+-- What is the average amount spent per account in Feb
+Select AVG(Quantity*Price) from FebSales as f
+Join customers c
+on f.orderid = c.order_id
+where length(orderID) = 6
+AND orderid <> 'Order ID';
+ 
+-- what is the average quantity of products purchased per account in feburary.
+select sum(Quantity)/count(c.acctnum)
+from febsales f
+join customers c
+on f.orderid = c.order_id
+where length(orderID) = 6
+AND orderid <> 'Order ID';
+ 
+-- which product brought in the most revenue in Jan. and how much revenue did it bring in
+select product, sum(quantity*price)revenue
+from jansales
+group by product
+having revenue > 0
+order by revenue desc
