@@ -1,0 +1,102 @@
+--For this project, I downloaded Spotify data from Kaggle.
+--Then I created a table to insert Spotify data into.
+--Finally, I performed analytics on the data using SQL. 
+
+
+
+-- going through data to spot differeces betwee the most poular songs and the least popular songs. The major difference is instrumentalness 
+select  
+avg(danceability),
+avg(energy),
+avg(loudness),
+avg(speechiness),
+avg(acousticness),
+avg(instrumentalness),
+avg(liveness),
+avg(valence),
+avg(tempo),
+avg(duration_ms)
+from spotifydata
+where popularity <= 82;
+
+select  
+avg(danceability),
+avg(energy),
+avg(loudness),
+avg(speechiness),
+avg(acousticness),
+avg(instrumentalness),
+avg(liveness),
+avg(valence),
+avg(tempo),
+avg(duration_ms)
+from spotifydata
+where popularity >= 92;
+
+select  
+avg(danceability),
+avg(energy),
+avg(loudness),
+avg(speechiness),
+avg(acousticness),
+avg(instrumentalness),
+avg(liveness),
+avg(valence),
+avg(tempo),
+avg(duration_ms)
+from spotifydata
+
+-- Artist average popularity 
+SELECT artist_name, 
+avg(popularity) as pop
+from spotifydata
+group by artist_name
+order by pop desc;
+
+--average danceability by artist
+SELECT 
+artist_name, 
+ROUND(avg(danceability), 2) as average_dance
+FROM Spotifydata
+GROUP BY artist_name
+ORDER BY average_dance DESC; 
+
+-- average popularity, danceability, and energy for the most popular artists 
+SELECT
+artist_name,
+ROUND(avg(popularity), 2) AS avg_pop,
+ROUND(avg(danceability), 2) AS avg_dance,
+ROUND(avg(energy), 2) AS avg_energy
+FROM BIT_DB.spotifydata
+GROUP BY artist_name 
+ORDER BY avg_pop DESC
+LIMIT 10;
+
+-- longest song 
+select
+max(duration_ms)
+from spotifydata
+
+-- turning duration_ms into minutes 
+select 
+track_name,
+(duration_ms/1000)/60 as duration_minutes
+from spotifydata
+order by duration_minutes desc;
+
+select * from spotifydata
+
+
+-- what songs have features and what is their popularity
+select track_name, popularity 
+from spotifydata
+where track_name like '%feat%'
+or
+track_name like '%with J%' 
+order by popularity desc
+
+
+-- what is the energy of the weeknd songs
+select artist_name, avg(energy) as avg_energy
+from spotifydata
+where artist_name = "The Weeknd"
