@@ -100,3 +100,18 @@ order by popularity desc
 select artist_name, avg(energy) as avg_energy
 from spotifydata
 where artist_name = "The Weeknd"
+
+-- using CTE to extract data
+with temptable as (
+  select avg(popularity) as avg_pop,
+  artist_name,
+from spotifydata
+  group by artist name
+)
+Select 
+  artist_name,
+  avg_pop,
+  'Top Star' as 'tag'
+from temptable
+  where avg_pop >= 90
+
