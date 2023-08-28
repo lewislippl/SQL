@@ -1,0 +1,95 @@
+--show customers full name that do not live in the USA
+select customerID, Firstname, Lastname, country
+from customers
+where country <> 'USA';
+
+-- show only customers from Brazil
+Select * from customers
+where country = 'Brazil';
+
+-- find the invoices of customers who are from Brazil
+Select 
+    c.Firstname,
+    c.Lastname,
+    i.InvoiceId,
+    i.BillingCountry,
+    i.InvoiceDate
+From invoices as i
+left join customers as c
+on i.customerid = c.customerid
+where i.billingcountry = 'Brazil';
+
+-- show employees who are sales agents
+Select * from employees 
+where title = 'Sales Support Agent';
+
+-- find distinct list of billing countries from invoice table 
+select distinct BillingCountry 
+from invoices;
+
+-- provide a query that shows the invoices associated with each sales agent
+Select e.firstname, e.lastname, i.InvoiceId
+from employees e
+join customers cust on cust.supportrepid = e.employeeId
+join invoices i on i.customerid = cust.customerid;
+
+
+--show the invoice totat, customer name, country, and sales agent name for all invoices and customers
+select i.total, c.firstname, c.lastname, c.country, e.firstname, e.lastname
+from invoices i 
+join customers c on c.customerId = i.customerId
+join employees e on e.employeeId = c.supportrepId;
+
+-- find how many invoices there were from 2009
+select count(*) 
+from invoices
+where InvoiceDate BETWEEN '2009-01-01' and '2009-12-31';
+
+
+-- what are the total sales from 2009
+Select sum(total) as 'Total Sales'
+from invoices
+where invoicedate between '2009-01-01' and '2009-12-31';
+
+-- show a query that includes the purchased track name with each invoice line id
+select t.name, inv.InvoiceLineId
+from invoice_items inv
+join tracks t on t.TrackId = inv.TrackId;
+
+-- write a query that includes the purchased track name and artist name with each invoice line id
+SELECT ar.name as Artist, t.Name as Track, i.InvoiceLineId
+FROM chinook.Invoice_items i
+LEFT JOIN chinook.tracks t 
+ON i.TrackID=t.TrackID
+INNER JOIN chinook.albums a
+ON a.AlbumID=t.AlbumID
+LEFT JOIN chinook.artists ar
+ON ar.ArtistID=a.ArtistID;
+
+
+-- provide a query that shows all the tracks, and include album name, media type, and genre
+Select t.name as 'Track Name', a.title as 'Album Title', m.name as 'media_type', g.name as 'genre_type'
+from tracks t
+join albums a on a.albumId = t.albumId
+join media_types m on m.mediatypeId = t.mediatypeId
+join genres g on g.genreId = t.genreId
+
+-- show total sales made by each sales agent
+Select e.firstname, e.lastname, e.title, sum(i.total)
+from employees e 
+join invoices i on i.customerid = c.customerid
+join customers c on c.supportrepid = e.employeeid
+where e.title = 'Sales Support Agent'
+Group by e.firstname
+
+-- show which sales agent made the most dollars in sales in 2009
+Select e.firstname, e.lastname, e.title, sum(i.total)as 'total sales'
+from employees e 
+join invoices i on i.customerid = c.customerid
+join customers c on c.supportrepid = e.employeeid
+where e.title = 'Sales Support Agent'
+and i.invoicedate between '2009-01-01' and '2009-12-31'
+Group by e.firstname
+order by 'total sales' desc limit 1;
+
+
